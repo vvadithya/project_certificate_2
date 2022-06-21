@@ -19,17 +19,17 @@ genders_list = ["Male" , "Female"]
 
   
 def resident_write_pdf(name , address , nation , date_of_birth , image , gender):
-                date_of_birth.split("-")
-                print(date_of_birth)
-                year = date_of_birth[0]
-                month = date_of_birth[1]
+                date_of_birth = list(date_of_birth)
+                year = date_of_birth[0:4]
+                year = "".join(year)
+                month = date_of_birth[5:7]
                 month = list(month)
-                month.remove(0)
-                month = str(month)                    
+                if 0 in month:
+                    month.remove(0)
+                month = "".join(month)                  
                 month = str(calendar.month_name[today.month])
-                
-                day = date_of_birth[2]
-                print(day , month , year)
+                day = date_of_birth[8:10]
+                day = "".join(day)
                 date_of_birth = str(day) + " " + str(month) + " " + str(year)
                 pdf = FPDF(orientation = 'L' , format = 'Legal')
                 pdf.add_page()
@@ -45,7 +45,7 @@ def resident_write_pdf(name , address , nation , date_of_birth , image , gender)
                 pdf.cell(200, 15, txt =gender , ln=4 , align = 'L')            
                 date_of_birth = "Date of Birth: " + str(date_of_birth)
                 pdf.cell(200, 15, txt = date_of_birth , ln=5 , align = 'L')
-                date_of_issue = "Date of Card Issue: " + str(today.day) + " "  + str(calendar.month_name[today.month]) + " " + str(today.year + 2)                
+                date_of_issue = "Date of Card Issue: " + str(today.day) + " "  + str(calendar.month_name[today.month]) + " " + str(today.year)                
                 pdf.cell(200, 15, txt = date_of_issue , ln=6 , align = 'L')                
                 date_of_expiry = "Date of Card Expiry: " + str(today.day) + " "  + str(calendar.month_name[today.month]) + " " + str(today.year + 2)
                 pdf.cell(200, 15, txt = date_of_expiry , ln=7 , align = 'L')
