@@ -220,6 +220,9 @@
                         <option value="female">Female</option>  
                     </select>
                 </p> 
+                <p><label for="images">Choose the image</label></p>
+                <p><input type="file" id="image" accept=".jpeg , .jpg"/></p>
+                <p><button for="folder" oclick="folderchose()">Select where you want to save the Certificate</button></p>
                 <p><button onclick="data()">Generate a PDF</button></p>                                                                     
             </form>
 
@@ -234,9 +237,11 @@
             date_of_birth = document.getElementById("birthday");
             gender = document.getElementById("gender");
             image = document.getElementById("image");
-            finalpath = document.getElementById("finalpath");
+            function folderchooser() {
+                
+            }
             function data(){
-                eel.test(uname.value , address.value , nation.value , date_of_birth.value , image.value , gender.value , finalpath.value);
+                eel.send_data(uname.value , address.value , nation.value , date_of_birth.value , image);
             }
         </script>
     </body>
