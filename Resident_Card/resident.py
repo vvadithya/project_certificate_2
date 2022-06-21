@@ -19,6 +19,18 @@ genders_list = ["Male" , "Female"]
 
   
 def resident_write_pdf(name , address , nation , date_of_birth , image , gender):
+                date_of_birth.split("-")
+                print(date_of_birth)
+                year = date_of_birth[0]
+                month = date_of_birth[1]
+                month = list(month)
+                month.remove(0)
+                month = str(month)                    
+                month = str(calendar.month_name[today.month])
+                
+                day = date_of_birth[2]
+                print(day , month , year)
+                date_of_birth = str(day) + " " + str(month) + " " + str(year)
                 pdf = FPDF(orientation = 'L' , format = 'Legal')
                 pdf.add_page()
                 pdf.set_font("Arial", 'BU' , 40)                

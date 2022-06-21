@@ -1,1 +1,0 @@
-name , address , nation , date_of_birth , image , gender
