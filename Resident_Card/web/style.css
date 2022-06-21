@@ -36,7 +36,7 @@
     #container label{
     font-family:'Abel', sans-serif;
     color:white;
-    padding:0 10px 0 0;
+    padding:0 25px 0 0;
     }
     .box[type=text]:focus{border-bottom:2px solid #FA5858;}
     #button{

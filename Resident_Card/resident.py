@@ -31,7 +31,10 @@ def resident_write_pdf(name , address , nation , date_of_birth , image , gender)
                 pdf.cell(200, 15, txt = address, ln = 3, align = 'L')
                 gender = "Gender: " + str(gender)
                 pdf.cell(200, 15, txt =gender , ln=4 , align = 'L')            
-                date_of_issue = "Date of Card Issue: " + str(today.day) + " "  + str(calendar.month_name[today.month]) + " " + str(today.year + 2)
+                date_of_birth = "Date of Birth: " + str(date_of_birth)
+                pdf.cell(200, 15, txt = date_of_birth , ln=5 , align = 'L')
+                date_of_issue = "Date of Card Issue: " + str(today.day) + " "  + str(calendar.month_name[today.month]) + " " + str(today.year + 2)                
+                pdf.cell(200, 15, txt = date_of_issue , ln=6 , align = 'L')                
                 date_of_expiry = "Date of Card Expiry: " + str(today.day) + " "  + str(calendar.month_name[today.month]) + " " + str(today.year + 2)
                 pdf.cell(200, 15, txt = date_of_expiry , ln=7 , align = 'L')
                 nationality = "Nationality: " + str(nation)
@@ -39,11 +42,10 @@ def resident_write_pdf(name , address , nation , date_of_birth , image , gender)
                 code = []
                 for i in range(int(17)):
                     value = random.choice(characters)
-                    
                     code.append(str(value))                 
                 code = "ID Code: " + "".join(code)
                 pdf.cell(200, 15, txt = code , ln=9 , align = 'L')
-                pdf.image(image , 250 , 50 , w=120)
+                pdf.image(image , 250 , 50 , w=60)
                 pdf.image("web/qrcode.png" , 280 , 150 , w=60)
                 pdf.set_font("Arial", size=16)                  
                 pdf.cell(200, 15, txt = "Verify this card by scanning the QR Code" , ln=14 , align = 'C')                
@@ -57,6 +59,7 @@ def send_data(name , address , nation , date_of_birth , image , gender):
     nation = nation
     image = image
     gender = gender
+    date_of_birth = date_of_birth
     resident_write_pdf(name , address , nation , date_of_birth , image , gender)
 # starting the application  
 eel.start("resident_card.html" ,size = (800,800))  
