@@ -1,0 +1,7 @@
+No. Of Errors: 6
+Empty date of birth
+You have entered an empty name!
+You have entered an empty address!
+You have to choose a country from the options given!
+Enter the path of the .jpg image!
+You have to choose a gender from the options given!

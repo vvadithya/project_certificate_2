@@ -1,4 +1,5 @@
 # importing the eel library  
+from distutils.log import error
 import eel  
 import calendar
 from fpdf import FPDF 
@@ -25,6 +26,9 @@ def close(x,port):
         exit()
 def check_data(name , address , nation , date_of_birth , image , gender):
     global errors , errors_list
+    if date_of_birth == "":
+        errors = errors + 1
+        errors_list.append("Empty date of birth!")    
     if name == "":
         errors_list.append("You have entered an empty name!")
         errors = errors + 1
@@ -43,6 +47,7 @@ def check_data(name , address , nation , date_of_birth , image , gender):
 
         
 def resident_write_pdf(name , address , nation , date_of_birth , image , gender):
+
                 date_of_birth = list(date_of_birth)
                 year = date_of_birth[0:4]
                 year = "".join(year)
@@ -81,7 +86,7 @@ def resident_write_pdf(name , address , nation , date_of_birth , image , gender)
                     code.append(str(value))                 
                 code = "ID Code: " + "".join(code)
                 pdf.cell(200, 15, txt = code , ln=9 , align = 'L')
-                pdf.image(image , 250 , 50 , w=60)
+                pdf.image(image , 280 , 50 , w=60)
                 pdf.image("web/qrcode.png" , 280 , 150 , w=60)
                 pdf.set_font("Arial", size=16)                  
                 pdf.cell(200, 15, txt = "Verify this card by scanning the QR Code" , ln=14 , align = 'C')                
@@ -101,10 +106,13 @@ def send_data(name , address , nation , date_of_birth , image , gender):
         resident_write_pdf(name , address , nation , date_of_birth , image , gender)
         eel.start("success.html" , port = 8002)
     if errors > 0:
+        print(address)
         file = open('errors.txt' , 'w')
+        data = "No. Of Errors: " + str(len(errors_list)) + "\n"                    
+        file.write(data)
         for a in errors_list:
             data = a + "\n"
-            file.write(data)        
+            file.write(data)
         file.close()            
         eel.start("error.html" , mode = 'chrome' , port = 8001)
 
