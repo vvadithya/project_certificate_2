@@ -5,9 +5,11 @@ from fpdf import FPDF
 import datetime
 import string
 import random
+from os import chdir
 # initializing the application  
 eel.init("web")  
 # import time
+nation_list = ['Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran',  'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dutch', 'Dutchman', 'Dutchwoman', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'Netherlander', 'New Zealander', 'Ni-Vanuatu', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian or Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean']
 
 # Today's date,this is used for the date of issue of the card
 today = datetime.datetime.now()
@@ -16,8 +18,30 @@ characters = string.ascii_uppercase + string.digits
 # list of nationalities(197 countries in this list)
 # list of genders
 genders_list = ["Male" , "Female"]
+errors = 0
+errors_list = []
+def close(x,port):
+    if x > 0:
+        exit()
+def check_data(name , address , nation , date_of_birth , image , gender):
+    global errors , errors_list
+    if name == "":
+        errors_list.append("You have entered an empty name!")
+        errors = errors + 1
+    if address == "":
+        errors_list.append("You have entered an empty address!")
+        errors = errors + 1
+    if nation == "Choose" or nation not in nation_list:
+        errors = errors + 1
+        errors_list.append("You have to choose a country from the options given!")                
+    if image == "":
+        errors = errors + 1
+        errors_list.append("Enter the path of the .jpg image!")
+    if gender == "Choose" or gender not in genders_list:
+        errors = errors + 1
+        errors_list.append("You have to choose a gender from the options given!")
 
-  
+        
 def resident_write_pdf(name , address , nation , date_of_birth , image , gender):
                 date_of_birth = list(date_of_birth)
                 year = date_of_birth[0:4]
@@ -72,6 +96,23 @@ def send_data(name , address , nation , date_of_birth , image , gender):
     image = image
     gender = gender
     date_of_birth = date_of_birth
-    resident_write_pdf(name , address , nation , date_of_birth , image , gender)
+    check_data(name , address , nation , date_of_birth , image , gender)
+    if errors == 0:
+        resident_write_pdf(name , address , nation , date_of_birth , image , gender)
+        eel.start("success.html" , port = 8002)
+    if errors > 0:
+        file = open('errors.txt' , 'w')
+        for a in errors_list:
+            data = a + "\n"
+            file.write(data)        
+        file.close()            
+        eel.start("error.html" , mode = 'chrome' , port = 8001)
+
+ 
+
+            
+
+
+        
 # starting the application  
-eel.start("resident_card.html" ,size = (800,800))  
+eel.start("resident_card.html" ,size = (800,800) , port = 8000)  
