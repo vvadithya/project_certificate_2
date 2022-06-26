@@ -1,5 +1,4 @@
 # importing the eel library  
-from distutils.log import error
 import eel  
 import calendar
 from fpdf import FPDF 
